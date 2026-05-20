@@ -28,7 +28,7 @@ The Thesaurus is edited by Jane Roberts and Christian Kay with Lynne Grundy. Thi
     dct:modified "2017-05-26"^^xsd:date ;
     owl:versionInfo "3.20170526"^^xsd:decimal ;
     dct:rights "Copyright © 1965-2017 University of Glasgow" ;
-    cc:licence <https://creativecommons.org/licenses/by-sa/4.0/> ;
+    cc:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
     dct:creator toeActor:JaneRoberts ,
       toeActor:ChristianKay ,
       toeActor:LynneGrundy ;
