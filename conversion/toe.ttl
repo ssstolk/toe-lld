@@ -6,6 +6,10 @@
 @prefix tree: <https://w3id.org/lemon-tree#> .
 @prefix gold: <http://purl.org/linguistics/gold/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix cc: <http://creativecommons.org/ns#> .
 @prefix toe: <http://oldenglishthesaurus.arts.gla.ac.uk/> .
 @prefix toeLvl: <http://oldenglishthesaurus.arts.gla.ac.uk/categoryType/#id=> .
 @prefix toePos: <http://oldenglishthesaurus.arts.gla.ac.uk/pos/#> .
@@ -13,39 +17,43 @@
 @prefix toeActor: <http://oldenglishthesaurus.arts.gla.ac.uk/actor/#> .
 
 
-
 # overall
 toe: a owl:Ontology ;
-    dcterms:rights "Copyright © 2017 University of Glasgow"@en ;
-    dcterms:rightsHolder <https://www.gla.ac.uk/> ;
-    cc:license "The dataset of A Thesaurus of Old English is copyright of the University of Glasgow. This dataset is made available to you via license holding websites. These sites make available that data to you for non-commercial research purposes (such as private reference, personal research, and the provision of teaching materials). You may not use the material from these sites and from this dataset for commercial or for-profit purposes.
-Regardless of your purpose, you are not permitted to use this dataset directly, rather than using the aforementioned websites, to gain access to a significant amount of Thesaurus data. Only limited quantities of data can be made available through these websites, although the amount which can be accessed is more than sufficient for almost all research purposes. Should you be involved in a research project which requires a substantial amount of Thesaurus data, please contact us at arts-thesauri@glasgow.ac.uk . It is explicitly prohibited to use this dataset or the aforementioned websites to systematically obtain large amounts of data.
-Finally, beyond limited extracts of up to a few hundred words which are necessary for your research or teaching, you may not reproduce, copy or transmit any part of this dataset without our prior permission in writing."@en ;
-    dcterms:creator toeActor:JaneRoberts , toeActor:ChristianKay , toeActor:LynneGrundy ;
-.
+    vann:preferredNamespacePrefix "toe" ;
+    vann:preferredNamespaceUri "http://oldenglishthesaurus.arts.gla.ac.uk/" ;
+    dct:title "A Thesaurus of Old English"@en ;
+    dct:description """A Thesaurus of Old English is conceptually arranged, and presents the vocabulary of Anglo-Saxon England within ordered categories. This allows the user to approach the materials of the Thesaurus by subject rather than through an alphabetic index as is the case for many thesauri. The provision of brief indications of meaning at all levels of this scheme allows word-senses to follow on from ideas explained, so that this thesaurus incorporates information about word meaning and could be described as an inside-out dictionary, with meanings first and then words. 
+The Thesaurus is edited by Jane Roberts and Christian Kay with Lynne Grundy. This Linguistic Linked Data version enables users to refer to categories and word-senses by means of the web addresses that identify them (also known as URIs). The advantage in doing so is that anyone's dataset can integrate material from the Thesaurus simply by creating digital connexions to the relevant information therein -- hence the term Linked Data. In addition to providing hitherto unavailable information for linguists, historians of language, authors, students of English, and textual scholars, A Thesaurus of Old English is a rich resource for investigating social and cultural history, showing the development of concepts through the words that refer to them."""@en ;
+    dct:issued "2017-05-26"^^xsd:date ;
+    dct:modified "2017-05-26"^^xsd:date ;
+    owl:versionInfo "3.20170526"^^xsd:decimal ;
+    dct:rights "Copyright © 1965-2017 University of Glasgow" ;
+    cc:licence <https://creativecommons.org/licenses/by-sa/4.0/> ;
+    dct:creator toeActor:JaneRoberts ,
+      toeActor:ChristianKay ,
+      toeActor:LynneGrundy ;
+    rdfs:seeAlso <http://oldenglishthesaurus.arts.gla.ac.uk/> ,
+      <https://hdl.handle.net/1887/3619351> ,
+      <https://brill.com/view/journals/abag/81/3-4/abag.81.issue-3-4.xml> ;
+.	
 
 toe:lexicon
-    dcterms:rights "Copyright © 2017 University of Glasgow"@en ;
-    dcterms:rightsHolder <https://www.gla.ac.uk/> ;
-    cc:license "The dataset of A Thesaurus of Old English is copyright of the University of Glasgow. This dataset is made available to you via license holding websites. These sites make available that data to you for non-commercial research purposes (such as private reference, personal research, and the provision of teaching materials). You may not use the material from these sites and from this dataset for commercial or for-profit purposes.
-Regardless of your purpose, you are not permitted to use this dataset directly, rather than using the aforementioned websites, to gain access to a significant amount of Thesaurus data. Only limited quantities of data can be made available through these websites, although the amount which can be accessed is more than sufficient for almost all research purposes. Should you be involved in a research project which requires a substantial amount of Thesaurus data, please contact us at arts-thesauri@glasgow.ac.uk . It is explicitly prohibited to use this dataset or the aforementioned websites to systematically obtain large amounts of data.
-Finally, beyond limited extracts of up to a few hundred words which are necessary for your research or teaching, you may not reproduce, copy or transmit any part of this dataset without our prior permission in writing."@en ;
-    dcterms:creator toeActor:JaneRoberts , toeActor:ChristianKay , toeActor:LynneGrundy ;
+    rdfs:isDefinedBy toe: ;
 .
 
 
 
 # actors
 toeActor:JaneRoberts a foaf:Person ;
-    rdf:value "Jane Roberts" ;
+    foaf:name "Jane Roberts" ;
 .
 
 toeActor:ChristianKay a foaf:Person ;
-    rdf:value "Christian Kay" ;
+    foaf:name "Christian Kay" ;
 .
 
 toeActor:LynneGrundy a foaf:Person ;
-    rdf:value "Lynne Grundy" ;
+    foaf:name "Lynne Grundy" ;
 .
 
 
