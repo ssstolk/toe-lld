@@ -16,11 +16,11 @@ INSERT {
     
     # triples for the lexicon
     toe:lexicon a skos:ConceptScheme .
-    toe:lexicon skos:prefLabel "Thesaurus of Old English"@en .
+    toe:lexicon skos:prefLabel "A Thesaurus of Old English"@en .
     toe:lexicon tree:conceptualLevels toe:ConceptualLevels .
     
     toe:ConceptualLevels a rdf:List .
-    toe:ConceptualLevels skos:prefLabel "Conceptual levels of the Thesaurus of Old English"@en .
+    toe:ConceptualLevels skos:prefLabel "Conceptual levels of A Thesaurus of Old English"@en .
     toe:ConceptualLevels rdf:first ?conceptualLevel0 .
     toe:ConceptualLevels rdf:rest toe:ConceptualLevels-subList1 .
     toe:ConceptualLevels-subList1 a rdf:List .
