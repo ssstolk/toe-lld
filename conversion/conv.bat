@@ -2,12 +2,12 @@
 set DIR_START=%cd%
 
 rem Below is a list of configurable variables required for input.
-SET CONV_DIR_INPUT=T:\input\
+SET CONV_DIR_INPUT=C:\Users\Sander\Documents\TOE database extracted\input\
 SET CONV_FILE_INPUT_CATEGORY=TOE_category_20170526.csv
 SET CONV_FILE_INPUT_XREF=TOE_category-xref_20170526.csv
 SET CONV_FILE_INPUT_LEXEME=TOE_lexeme_20170526.csv
 
-SET CONV_DIR_TEMP=T:\temp\
+SET CONV_DIR_TEMP=C:\Users\Sander\Documents\TOE database extracted\temp\
 SET CONV_DIR_QUERIES=%DIR_START%
 SET CONV_DIR_SCHEMAS=%DIR_START%
 
@@ -59,12 +59,6 @@ cd /d %CONV_DIR_SCHEMAS%
 for /F "delims=" %%f in ('dir /b *.ttl') do ^
 echo .... (by means of schema "%%f") && ^
 curl -X POST -H "Content-Type: text/turtle; charset=UTF-8" --data-binary "@%%f" "%CONV_RDF4J_SERVER%/repositories/%CONV_RDF4J_REPO%/statements?context=%%3Curn:def:%%f%%3E" || goto :error
-for /F "delims=" %%f in ('dir /b *.rdf') do ^
-echo .... (by means of schema "%%f") && ^
-curl -X POST -H "Content-Type: application/rdf+xml; charset=UTF-8" --data-binary "@%%f" "%CONV_RDF4J_SERVER%/repositories/%CONV_RDF4J_REPO%/statements?context=%%3Curn:def:%%f%%3E" || goto :error
-for /F "delims=" %%f in ('dir /b *.owl') do ^
-echo .... (by means of schema "%%f") && ^
-curl -X POST -H "Content-Type: application/rdf+xml; charset=UTF-8" --data-binary "@%%f" "%CONV_RDF4J_SERVER%/repositories/%CONV_RDF4J_REPO%/statements?context=%%3Curn:def:%%f%%3E" || goto :error
 cd /d %DIR_START%
 
 :clean
