@@ -32,6 +32,10 @@ The Thesaurus is edited by Jane Roberts and Christian Kay with Lynne Grundy. Thi
     dct:creator toeActor:JaneRoberts ,
       toeActor:ChristianKay ,
       toeActor:LynneGrundy ;
+    owl:imports <http://www.w3.org/2004/02/skos/core> ,
+      <http://www.w3.org/ns/lemon/ontolex> ,
+      <https://w3id.org/lemon-tree> ,
+      <http://purl.org/linguistics/gold> ;      
     rdfs:seeAlso <http://oldenglishthesaurus.arts.gla.ac.uk/> ,
       <https://hdl.handle.net/1887/3619351> ,
       <https://brill.com/view/journals/abag/81/3-4/abag.81.issue-3-4.xml> ;
