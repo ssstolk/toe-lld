@@ -2,44 +2,54 @@ PREFIX ontolex: <http://www.w3.org/ns/lemon/ontolex#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX tree: <https://w3id.org/lemon-tree#>
 PREFIX gold: <http://purl.org/linguistics/gold/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX toe: <http://oldenglishthesaurus.arts.gla.ac.uk/>
 
+###############################################################################
+# Determine SameAs entries, based on their label being identical (same language
+# is assumed) and their types being identical (i.e., part of speech and flags).
+###############################################################################
+
 WITH <urn:toe:senses>
 INSERT {
-    ?entry1 owl:sameAs ?entry2 .
+    ?entry1 ?sameAsRelation ?entry2 .
+    ?entry2 ?sameAsInverseRelation ?entry1 .
 }
 USING <urn:toe:senses>
+USING NAMED <urn:toe:senses>
+USING NAMED <urn:input:toePrevious>
 WHERE {
-    ?entry1 skos:prefLabel ?entryLabel .
-    ?entry2 skos:prefLabel ?entryLabel .
-
-    ?entry1 a ontolex:LexicalEntry .
-    ?entry2 a ontolex:LexicalEntry .
+    # ensure the label and types for two compared entries are identical, and check information from the two named graphs separately
+    {
+        SELECT (SUM(?typeHash) AS ?entry1typesHash) ?g1 ?entry1 ?entryLabel {
+            GRAPH ?g1 {
+                ?entry1 a ontolex:LexicalEntry .
+                ?entry1 skos:prefLabel ?entryLabel .
+                ?entry1 a ?type .
+                BIND (STRDT(replace(MD5(str(?type)),'[a-z]',''), xsd:integer) AS ?typeHash) .
+            }
+        }
+        GROUP BY ?g1 ?entry1 ?entryLabel
+    }
+    {
+        SELECT (SUM(?typeHash) AS ?entry2typesHash) ?g2 ?entry2 ?entryLabel {
+            GRAPH ?g2 {
+                ?entry2 a ontolex:LexicalEntry .
+                ?entry2 skos:prefLabel ?entryLabel .
+                ?entry2 a ?type .
+                BIND (STRDT(replace(MD5(str(?type)),'[a-z]',''), xsd:integer) AS ?typeHash) .
+            }
+        }
+        GROUP BY ?g2 ?entry2 ?entryLabel
+    }
+    FILTER (bound(?entry1typesHash) && bound(?entry2typesHash) && (?entry1typesHash != 0) && (?entry1typesHash=?entry2typesHash)) .
     
     BIND(STRDT(STRAFTER(STR(?entry1), CONCAT(STR(toe:),"entry/#id=")), xsd:integer) AS ?entry1id) .
     BIND(STRDT(STRAFTER(STR(?entry2), CONCAT(STR(toe:),"entry/#id=")), xsd:integer) AS ?entry2id) .
     FILTER (?entry1id < ?entry2id) .
-  
-    FILTER NOT EXISTS {
-        ?entry1 a ?entryType1 .
-        ?entry1 a ontolex:LexicalEntry . # redundancy needed for subpattern
-        ?entry2 a ontolex:LexicalEntry . # redundancy needed for subpattern
-        FILTER NOT EXISTS {
-            ?entry2 a ?entryType1 .
-            ?entry1 a ontolex:LexicalEntry . # redundancy needed for subpattern
-            ?entry2 a ontolex:LexicalEntry . # redundancy needed for subpattern
-        }
-    }
-  
-    FILTER NOT EXISTS {
-        ?entry2 a ?entryType2 .
-        ?entry1 a ontolex:LexicalEntry . # redundancy needed for subpattern
-        ?entry2 a ontolex:LexicalEntry . # redundancy needed for subpattern
-        FILTER NOT EXISTS {
-            ?entry1 a ?entryType2 .
-            ?entry1 a ontolex:LexicalEntry . # redundancy needed for subpattern
-            ?entry2 a ontolex:LexicalEntry . # redundancy needed for subpattern
-        }
-    }
+    
+    BIND (IF(?g2 = <urn:input:toePrevious>, owl:sameAsPrevious,
+        IF(?g1 = <urn:input:toePrevious>, ?undefined, owl:sameAs)) AS ?sameAsRelation) .
+    BIND (IF(?g1 = <urn:input:toePrevious>, owl:sameAsPrevious, ?undefined) AS ?sameAsInverseRelation) . 
 }

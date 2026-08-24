@@ -4,11 +4,13 @@ PREFIX tree: <https://w3id.org/lemon-tree#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX toe: <http://oldenglishthesaurus.arts.gla.ac.uk/>
 
+###############################################################################
 # Fix on TOE dataset, where the taxonomy occasionally lacks subcategories
 #   that ought to be there (as evidenced by existing codes/notations). 
 # Such missing concepts are added with 
 #   - the following id in their URI: "bnode-<notation>"
 #   - the following label: <notation>
+###############################################################################
 
 WITH <urn:toe:concepts>
 INSERT {

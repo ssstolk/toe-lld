@@ -2,30 +2,68 @@ PREFIX ontolex: <http://www.w3.org/ns/lemon/ontolex#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX tree: <https://w3id.org/lemon-tree#>
 PREFIX gold: <http://purl.org/linguistics/gold/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX toe: <http://oldenglishthesaurus.arts.gla.ac.uk/>
+
+###############################################################################
+# Move senses of SameAs entries to the primary entry.
+###############################################################################
 
 WITH <urn:toe:senses>
 DELETE {
     ?sense ontolex:isSenseOf ?entry2 .
 }
 INSERT {
-    ?sense ontolex:isSenseOf ?entry1 .
+    ?sense ontolex:isSenseOf ?entryPrimary .
 }
 USING <urn:toe:senses>
+USING NAMED <urn:input:toePrevious>
 WHERE {
     ?sense ontolex:isSenseOf ?entry2 .
-    ?entry2 owl:sameAs|^owl:sameAs ?entry1 .
     
-    BIND(STRDT(STRAFTER(STR(?entry1), CONCAT(STR(toe:),"entry/#id=")), xsd:integer) AS ?entry1id) .
-    BIND(STRDT(STRAFTER(STR(?entry2), CONCAT(STR(toe:),"entry/#id=")), xsd:integer) AS ?entry2id) .
-    FILTER (?entry1id < ?entry2id) .
-    
-    FILTER NOT EXISTS {
+    OPTIONAL {
         ?entry2 owl:sameAs|^owl:sameAs ?entry1 .
-        ?entry2 owl:sameAs|^owl:sameAs ?entryBefore1.
+        
         BIND(STRDT(STRAFTER(STR(?entry1), CONCAT(STR(toe:),"entry/#id=")), xsd:integer) AS ?entry1id) .
-        BIND(STRDT(STRAFTER(STR(?entryBefore1), CONCAT(STR(toe:),"entry/#id=")), xsd:integer) AS ?entryBefore1id) .
-        FILTER (?entryBefore1id < ?entry1id) .
+        BIND(STRDT(STRAFTER(STR(?entry2), CONCAT(STR(toe:),"entry/#id=")), xsd:integer) AS ?entry2id) .
+        FILTER (?entry1id < ?entry2id) .
+        
+        FILTER NOT EXISTS {
+            ?entry2 owl:sameAs|^owl:sameAs ?entry1 .
+            ?entry2 owl:sameAs|^owl:sameAs ?entryBefore1.
+            BIND(STRDT(STRAFTER(STR(?entry1), CONCAT(STR(toe:),"entry/#id=")), xsd:integer) AS ?entry1id) .
+            BIND(STRDT(STRAFTER(STR(?entryBefore1), CONCAT(STR(toe:),"entry/#id=")), xsd:integer) AS ?entryBefore1id) .
+            FILTER (?entryBefore1id < ?entry1id) .
+        }
+    }    
+    
+    OPTIONAL {
+        # reuse an old LexicalEntry as primary URI for an entry if and only if
+        # - that old entry has the same word+flag combination as the entry under scrutiny (i.e., ?entry2) AND
+        # - that word+flag combination has not changed for the entry with that URI since the previous version
+        ?entry2 (owl:sameAs|^owl:sameAs)*/(owl:sameAsPrevious|^owl:sameAsPrevious) ?entryPrev .
+        {
+            SELECT (SUM(?typeHash) AS ?entryPrevTypesHashCurrent) ?entryPrev {
+                ?entry2 (owl:sameAs|^owl:sameAs)*/(owl:sameAsPrevious|^owl:sameAsPrevious) ?entryPrev .
+                ?entryPrev a ?type .
+                BIND (STRDT(replace(MD5(str(?type)),'[a-z]',''), xsd:integer) AS ?typeHash) .
+            }
+            GROUP BY ?entryPrev
+        }
+        {
+            SELECT (SUM(?typeHash) AS ?entryPrevTypesHashPrevious) ?entryPrev {
+                ?entry2 (owl:sameAs|^owl:sameAs)*/(owl:sameAsPrevious|^owl:sameAsPrevious) ?entryPrev .
+                GRAPH <urn:input:toePrevious> {
+                    ?entryPrev a ?type .
+                    BIND (STRDT(replace(MD5(str(?type)),'[a-z]',''), xsd:integer) AS ?typeHash) .
+                }
+            }
+            GROUP BY ?entryPrev
+        }
+        FILTER (bound(?entryPrevTypesHashCurrent) && bound(?entryPrevTypesHashPrevious) && (?entryPrevTypesHashCurrent != 0) && (?entryPrevTypesHashCurrent=?entryPrevTypesHashPrevious)) .
     }
+    
+    BIND (COALESCE(?entryPrev, ?entry1, ?undefined) AS ?entryPrimary) .
+    FILTER (bound(?entryPrimary)) .
 }

@@ -2,22 +2,29 @@ PREFIX ontolex: <http://www.w3.org/ns/lemon/ontolex#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX tree: <https://w3id.org/lemon-tree#>
 PREFIX gold: <http://purl.org/linguistics/gold/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX toe: <http://oldenglishthesaurus.arts.gla.ac.uk/>
 
+###############################################################################
+# If no statements exist in graph <urn:toe:senses> for an entry that has one 
+# or more senses, that entry must have originated from graph
+# <urn:input:toePrevious>, so as to keep URIs for entries stable. This query
+# adds the necessary statements to graph <urn:toe:senses> for such entries.
+###############################################################################
+
 WITH <urn:toe:senses>
-DELETE {
-    ?tgtEntryEmpty ?p ?o .
-    ?tgtEntrySameAs owl:sameAs ?tgtEntryEmpty .
+INSERT {
+    ?entry1 ?p ?o .
 }
 USING <urn:toe:senses>
 WHERE {
-    ?tgtEntryEmpty a ontolex:LexicalEntry .
-    FILTER NOT EXISTS {
-        ?sense ontolex:isSenseOf ?tgtEntryEmpty .
-    }
-    ?tgtEntryEmpty ?p ?o .
-    OPTIONAL {
-        ?tgtEntrySameAs owl:sameAs ?tgtEntryEmpty .
-    }
+    ?sense ontolex:isSenseOf ?entry1 .
+    FILTER NOT EXISTS { 
+        ?entry1 a ontolex:LexicalEntry .
+        ?sense ontolex:isSenseOf ?entry1 . # redundancy needed for subpattern
+    } .
+
+    ?entry2 owl:sameAs|^owl:sameAs ?entry1 .
+    ?entry2 ?p ?o .
 }

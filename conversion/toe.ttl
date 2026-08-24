@@ -25,9 +25,7 @@ toe: a owl:Ontology ;
     dct:description """A Thesaurus of Old English is conceptually arranged, and presents the vocabulary of Anglo-Saxon England within ordered categories. This allows the user to approach the materials of the Thesaurus by subject rather than through an alphabetic index as is the case for many thesauri. The provision of brief indications of meaning at all levels of this scheme allows word-senses to follow on from ideas explained, so that this thesaurus incorporates information about word meaning and could be described as an inside-out dictionary, with meanings first and then words. 
 The Thesaurus is edited by Jane Roberts and Christian Kay with Lynne Grundy. This Linguistic Linked Data version enables users to refer to categories and word-senses by means of the web addresses that identify them (also known as URIs). The advantage in doing so is that anyone's dataset can integrate material from the Thesaurus simply by creating digital connexions to the relevant information therein -- hence the term Linked Data. In addition to providing hitherto unavailable information for linguists, historians of language, authors, students of English, and textual scholars, A Thesaurus of Old English is a rich resource for investigating social and cultural history, showing the development of concepts through the words that refer to them."""@en ;
     dct:issued "2017-05-26"^^xsd:date ;
-    dct:modified "2017-05-26"^^xsd:date ;
-    owl:versionInfo "3.20170526"^^xsd:decimal ;
-    dct:rights "Copyright © 1965-2017 University of Glasgow" ;
+    dct:rights "Copyright © University of Glasgow" ;
     dct:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
     dct:creator toeActor:JaneRoberts ,
       toeActor:ChristianKay ,
