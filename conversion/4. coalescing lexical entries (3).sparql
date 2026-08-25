@@ -18,13 +18,17 @@ INSERT {
     ?entry1 ?p ?o .
 }
 USING <urn:toe:senses>
+USING <urn:input:toePrevious>
+USING NAMED <urn:toe:senses>
 WHERE {
-    ?sense ontolex:isSenseOf ?entry1 .
-    FILTER NOT EXISTS { 
-        ?entry1 a ontolex:LexicalEntry .
-        ?sense ontolex:isSenseOf ?entry1 . # redundancy needed for subpattern
-    } .
+    GRAPH <urn:toe:senses> {
+        ?sense ontolex:isSenseOf ?entry1 .
+        FILTER NOT EXISTS { 
+            ?entry1 a ontolex:LexicalEntry .
+            ?sense ontolex:isSenseOf ?entry1 . # redundancy needed for subpattern
+        } .
+    }
 
-    ?entry2 owl:sameAs|^owl:sameAs ?entry1 .
+    ?entry2 owl:sameAs|^owl:sameAs|owl:sameAsPrevious|^owl:sameAsPrevious ?entry1 .
     ?entry2 ?p ?o .
 }
