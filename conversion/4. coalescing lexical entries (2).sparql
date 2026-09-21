@@ -18,7 +18,7 @@ INSERT {
     ?sense ontolex:isSenseOf ?entryPrimary .
 }
 USING <urn:toe:senses>
-USING NAMED <urn:input:toePrevious>
+USING NAMED <urn:toe:input:toePrevious>
 WHERE {
     ?sense ontolex:isSenseOf ?entry2 .
     
@@ -54,7 +54,7 @@ WHERE {
         {
             SELECT (SUM(?typeHash) AS ?entryPrevTypesHashPrevious) ?entryPrev {
                 ?entry2 (owl:sameAs|^owl:sameAs)*/(owl:sameAsPrevious|^owl:sameAsPrevious) ?entryPrev .
-                GRAPH <urn:input:toePrevious> {
+                GRAPH <urn:toe:input:toePrevious> {
                     ?entryPrev a ?type .
                     BIND (STRDT(replace(MD5(str(?type)),'[a-z]',''), xsd:integer) AS ?typeHash) .
                 }

@@ -64,7 +64,6 @@ IF "%ERRORLEVEL%" == "2" goto :error
 
 :step3
 echo ... performing step 3: interpreting semantics.
-
 cd /d %CONV_DIR_QUERIES%
 for /F "delims=" %%f in ('dir /b *.sparql') do ^
 echo .... (by means of query "%%f") && ^

@@ -9,8 +9,9 @@ PREFIX toe: <http://oldenglishthesaurus.arts.gla.ac.uk/>
 ###############################################################################
 # If no statements exist in graph <urn:toe:senses> for an entry that has one 
 # or more senses, that entry must have originated from graph
-# <urn:input:toePrevious>, so as to keep URIs for entries stable. This query
-# adds the necessary statements to graph <urn:toe:senses> for such entries.
+# <urn:toe:input:toePrevious>, so as to keep URIs for entries stable. This
+# query adds the necessary statements to graph <urn:toe:senses> for such 
+# entries.
 ###############################################################################
 
 WITH <urn:toe:senses>
@@ -18,7 +19,7 @@ INSERT {
     ?entry1 ?p ?o .
 }
 USING <urn:toe:senses>
-USING <urn:input:toePrevious>
+USING <urn:toe:input:toePrevious>
 USING NAMED <urn:toe:senses>
 WHERE {
     GRAPH <urn:toe:senses> {

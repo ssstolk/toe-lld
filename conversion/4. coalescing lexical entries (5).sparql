@@ -7,19 +7,15 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX toe: <http://oldenglishthesaurus.arts.gla.ac.uk/>
 
 ###############################################################################
-# Delete any entries that, due to having moved senses in an earlier query in
-# this process, no longer have any senses associated with them.
+# Delete any owl:sameAs statements between entries
 ###############################################################################
 
 WITH <urn:toe:senses>
 DELETE {
-    ?tgtEntryEmpty ?p ?o .
+    ?s ?p ?o
 }
 USING <urn:toe:senses>
 WHERE {
-    ?tgtEntryEmpty a ontolex:LexicalEntry .
-    FILTER NOT EXISTS {
-        ?sense ontolex:isSenseOf ?tgtEntryEmpty .
-    }
-    ?tgtEntryEmpty ?p ?o .
+    VALUES ?p { owl:sameAs owl:sameAsPrevious }
+    ?s ?p ?o .
 }

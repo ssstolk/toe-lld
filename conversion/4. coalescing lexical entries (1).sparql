@@ -18,7 +18,7 @@ INSERT {
 }
 USING <urn:toe:senses>
 USING NAMED <urn:toe:senses>
-USING NAMED <urn:input:toePrevious>
+USING NAMED <urn:toe:input:toePrevious>
 WHERE {
     # ensure the label and types for two compared entries are identical, and check information from the two named graphs separately
     {
@@ -49,7 +49,7 @@ WHERE {
     BIND(STRDT(STRAFTER(STR(?entry2), CONCAT(STR(toe:),"entry/#id=")), xsd:integer) AS ?entry2id) .
     FILTER (?entry1id < ?entry2id) .
     
-    BIND (IF(?g2 = <urn:input:toePrevious>, owl:sameAsPrevious,
-        IF(?g1 = <urn:input:toePrevious>, ?undefined, owl:sameAs)) AS ?sameAsRelation) .
-    BIND (IF(?g1 = <urn:input:toePrevious>, owl:sameAsPrevious, ?undefined) AS ?sameAsInverseRelation) . 
+    BIND (IF(?g2 = <urn:toe:input:toePrevious>, owl:sameAsPrevious,
+        IF(?g1 = <urn:toe:input:toePrevious>, ?undefined, owl:sameAs)) AS ?sameAsRelation) .
+    BIND (IF(?g1 = <urn:toe:input:toePrevious>, owl:sameAsPrevious, ?undefined) AS ?sameAsInverseRelation) . 
 }
